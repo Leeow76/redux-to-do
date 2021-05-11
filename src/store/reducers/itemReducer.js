@@ -3,7 +3,7 @@ import * as itemActionTypes from "../actionTypes/itemActionTypes";
 const initialState = {
   items: [
     {
-      title: "Dummy itle",
+      title: "Dummy title",
       content: "Dummy content",
       id: "_1tKdHc2t",
     },

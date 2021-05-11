@@ -1,4 +1,4 @@
-CRUD to-do list with react, redux, jest-enzyme unit testing, Material UI components, other fun things in the future. Just for practice.
+CRUD to-do list with react, redux, Material UI components, other fun things in the future. Just for practice.
 
 ### `yarn start`
 

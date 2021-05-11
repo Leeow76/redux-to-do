@@ -1,17 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
+import Divider from "@material-ui/core/Divider";
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
 
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import Item from "./Item/Item";
+import AddItemInput from "./AddItemInput/AddItemInput";
 import { removeItem } from "../../store/actions/itemActions";
 
 const useStyles = makeStyles((theme) => ({
-  listContainer: {
-    width: "100%",
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-    margin: "auto",
+  listBox: {
+    marginTop: "12em",
   },
 }));
 
@@ -19,24 +20,32 @@ function ItemList(props) {
   const classes = useStyles();
 
   const itemComponents = props.items.map((item, index) => (
-    <Item
-      clicked={() => props.removeItem(item.id)}
-      key={index}
-      title={item.title}
-      content={item.content}
-    />
+    <>
+      <Item
+        delete={() => props.removeItem(item.id)}
+        key={index}
+        title={item.title}
+        content={item.content}
+      />
+      {props.items.length !== index + 1 && (
+        <Divider light variant="middle" component="li" />
+      )}
+    </>
   ));
 
   return (
-    <div className={classes.listContainer}>
-      <List>{itemComponents}</List>
-    </div>
+    <Container maxWidth="sm">
+      <Box className={classes.listBox} bgcolor="primary.main">
+        <List>{itemComponents}</List>
+        <AddItemInput />
+      </Box>
+    </Container>
   );
 }
 
 const mapStateToProps = (state) => {
   return {
-    items: state.listReducer.items,
+    items: state.itemReducer.items,
   };
 };
 
