@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Divider from "@material-ui/core/Divider";
 import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
+import Paper from "@material-ui/core/Paper";
 
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -11,8 +11,9 @@ import AddItemInput from "./AddItemInput/AddItemInput";
 import { removeItem } from "../../store/actions/itemActions";
 
 const useStyles = makeStyles((theme) => ({
-  listBox: {
+  listPaper: {
     marginTop: "12em",
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
@@ -35,10 +36,10 @@ function ItemList(props) {
 
   return (
     <Container maxWidth="sm">
-      <Box className={classes.listBox} bgcolor="primary.main">
+      <Paper className={classes.listPaper} bgcolor="primary.main">
         <List>{itemComponents}</List>
         <AddItemInput />
-      </Box>
+      </Paper>
     </Container>
   );
 }
