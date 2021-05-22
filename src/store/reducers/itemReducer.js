@@ -1,23 +1,9 @@
 import * as itemActionTypes from "../actionTypes/itemActionTypes";
 
 const initialState = {
-  items: [
-    {
-      title: "Dummy title",
-      content: "Dummy content",
-      id: "_1tKdHc2t",
-    },
-    {
-      title: "Dummy title 2",
-      content: "Dummy content 2",
-      id: "zZtWpv9GF",
-    },
-    {
-      title: "Dummy title 3",
-      content: "Dummy content 3",
-      id: "gHeEVbUia",
-    },
-  ],
+  status: "idle",
+  error: null,
+  items: [],
 };
 
 const itemReducer = (state = initialState, action) => {
@@ -26,6 +12,23 @@ const itemReducer = (state = initialState, action) => {
       return {
         ...state,
         items: state.items.filter((v) => v.id !== action.id),
+      };
+    case itemActionTypes.FETCH_ITEMS_LOADING:
+      return {
+        ...state,
+        status: "loading",
+      };
+    case itemActionTypes.FETCH_ITEMS_SUCCESS:
+      return {
+        ...state,
+        status: "succeeded",
+        items: action.items,
+      };
+    case itemActionTypes.FETCH_ITEMS_ERROR:
+      return {
+        ...state,
+        status: "failed",
+        error: action.error,
       };
     default:
       return state;

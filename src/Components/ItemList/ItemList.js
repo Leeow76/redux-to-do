@@ -1,5 +1,5 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Divider from "@material-ui/core/Divider";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import Item from "./Item/Item";
 import AddItemInput from "./AddItemInput/AddItemInput";
-import { removeItem } from "../../store/actions/itemActions";
+import { removeItem, fetchItems } from "../../store/actions/itemActions";
 
 const useStyles = makeStyles((theme) => ({
   listPaper: {
@@ -20,15 +20,30 @@ const useStyles = makeStyles((theme) => ({
 function ItemList(props) {
   const classes = useStyles();
 
-  const itemComponents = props.items.map((item, index) => (
+  const dispatch = useDispatch();
+
+  // Redux state
+  const itemStatus = useSelector((state) => state.itemReducer.status);
+  const items = useSelector((state) => state.itemReducer.items);
+  // Redux dispatch
+  const remItem = (index) => dispatch(removeItem(index));
+
+  // Update if status idle and status changes
+  useEffect(() => {
+    if (itemStatus === "idle") {
+      dispatch(fetchItems());
+    }
+  }, [itemStatus, dispatch]);
+
+  const itemComponents = items.map((item, index) => (
     <>
       <Item
-        delete={() => props.removeItem(item.id)}
+        delete={() => remItem(item.id)}
         key={index}
         title={item.title}
         content={item.content}
       />
-      {props.items.length !== index + 1 && (
+      {items.length !== index + 1 && (
         <Divider light variant="middle" component="li" />
       )}
     </>
@@ -44,14 +59,4 @@ function ItemList(props) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    items: state.itemReducer.items,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  removeItem: (index) => dispatch(removeItem(index)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ItemList);
+export default ItemList;

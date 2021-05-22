@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
   },
   editBtn: {
-    color: theme.palette.secondary.light,
+    color: theme.palette.secondary.main,
   },
 }));
 
