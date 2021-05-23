@@ -1,13 +1,5 @@
-import shortid from "shortid";
-
 import * as itemActionTypes from "../actionTypes/itemActionTypes";
 
-export const removeItem = (id) => (dispatch) => {
-  dispatch({
-    type: itemActionTypes.REMOVE_LIST_ITEM,
-    id: id,
-  });
-};
 export const fetchItemsLoading = (id) => (dispatch) => {
   dispatch({
     type: itemActionTypes.FETCH_ITEMS_LOADING,
@@ -39,4 +31,18 @@ export const fetchItems = () => async (dispatch) => {
   } catch (error) {
     dispatch(fetchItemsError(error));
   }
+};
+
+export const removeItem = (id) => (dispatch) => {
+  dispatch({
+    type: itemActionTypes.REMOVE_LIST_ITEM,
+    id: id,
+  });
+};
+
+export const addItem = (data) => (dispatch) => {
+  dispatch({
+    type: itemActionTypes.ADD_LIST_ITEM,
+    data: data,
+  });
 };

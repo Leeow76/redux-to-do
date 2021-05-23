@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
@@ -33,12 +33,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddItemInput() {
-  const [contentValue, setContentValue] = React.useState();
+export default function AddItemInput(props) {
+  const [title, setTitle] = useState();
+  const [content, setContent] = useState();
   const classes = useStyles();
 
+  // useEffect(() => {
+  //   if (props.editData) {
+  //     console.log(props.editData);
+  //   }
+  // }, [props.editData]);
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
   const handleContentChange = (event) => {
-    setContentValue(event.target.value);
+    setContent(event.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.submit({ title, content });
+    setTitle("");
+    setContent("");
   };
 
   return (
@@ -52,8 +70,8 @@ export default function AddItemInput() {
           multiline
           color="secondary"
           variant="outlined"
-          value={contentValue}
-          onChange={handleContentChange}
+          value={title}
+          onChange={handleTitleChange}
           className={classes.toDoTitle}
         />
         <Button
@@ -61,6 +79,7 @@ export default function AddItemInput() {
           color="secondary"
           size="medium"
           className={classes.toDoSubmit}
+          onClick={handleSubmit}
         >
           <AddIcon size="large" className={classes.toDoSubmitIcon} />
         </Button>
@@ -71,7 +90,7 @@ export default function AddItemInput() {
           multiline
           color="secondary"
           variant="outlined"
-          value={contentValue}
+          value={content}
           onChange={handleContentChange}
           className={classes.toDoNotes}
         />
