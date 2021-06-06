@@ -1,5 +1,10 @@
 import * as itemActionTypes from "../actionTypes/itemActionTypes";
 
+// Simulating loading
+async function stall(stallTime = 1000) {
+  await new Promise((resolve) => setTimeout(resolve, stallTime));
+}
+
 export const fetchItemsLoading = (id) => (dispatch) => {
   dispatch({
     type: itemActionTypes.FETCH_ITEMS_LOADING,
@@ -21,13 +26,19 @@ export const fetchItemsError = (error) => (dispatch) => {
 
 export const fetchItems = () => async (dispatch) => {
   dispatch(fetchItemsLoading());
+  // Simulating loading
+  await stall();
   try {
     const data = await (
       await fetch(
         "https://portfolio-76f4d-default-rtdb.europe-west1.firebasedatabase.app/items.json"
       )
     ).json();
-    dispatch(fetchItemsSuccess(data));
+    if (data !== null) {
+      dispatch(fetchItemsSuccess(data));
+    } else {
+      throw new Error("Could not fetch to-do items!");
+    }
   } catch (error) {
     dispatch(fetchItemsError(error));
   }

@@ -15,21 +15,22 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   toDoTitle: {
-    width: `calc(100% - ${theme.spacing(7)}px)`,
+    width: "100%",
   },
   toDoNotes: {
     marginTop: theme.spacing(2),
-    width: "100%",
+    width: `calc(100% - ${theme.spacing(8)}px)`,
   },
   toDoSubmit: {
     padding: theme.spacing(1),
     minWidth: theme.spacing(4),
-    margin: "0",
+    marginRight: "0",
     borderRadius: "50%",
+    marginTop: theme.spacing(2),
   },
   toDoSubmitIcon: {
-    height: theme.spacing(3),
-    width: theme.spacing(3),
+    height: theme.spacing(4),
+    width: theme.spacing(4),
   },
 }));
 
@@ -52,11 +53,15 @@ export default function AddItemInput(props) {
     setContent(event.target.value);
   };
 
+  const resetForm = () => {
+    setTitle("");
+    setContent("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     props.submit({ title, content });
-    setTitle("");
-    setContent("");
+    resetForm();
   };
 
   return (
@@ -64,7 +69,7 @@ export default function AddItemInput(props) {
       <Divider />
       <FormControl fullWidth className={classes.form}>
         <TextField
-          size="medium"
+          size="small"
           label="To do"
           placeholder="In a few words"
           multiline
@@ -73,6 +78,17 @@ export default function AddItemInput(props) {
           value={title}
           onChange={handleTitleChange}
           className={classes.toDoTitle}
+        />
+        <TextField
+          size="small"
+          label="Notes"
+          placeholder="Add details"
+          multiline
+          color="secondary"
+          variant="outlined"
+          value={content}
+          onChange={handleContentChange}
+          className={classes.toDoNotes}
         />
         <Button
           variant="contained"
@@ -83,17 +99,6 @@ export default function AddItemInput(props) {
         >
           <AddIcon size="large" className={classes.toDoSubmitIcon} />
         </Button>
-        <TextField
-          size="medium"
-          label="Notes"
-          placeholder="Add details"
-          multiline
-          color="secondary"
-          variant="outlined"
-          value={content}
-          onChange={handleContentChange}
-          className={classes.toDoNotes}
-        />
       </FormControl>
     </>
   );

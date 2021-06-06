@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
   editBtn: {
     color: theme.palette.secondary.main,
+    marginRight: theme.spacing(2),
   },
 }));
 
@@ -25,7 +26,6 @@ export default function Item(props) {
         <IconButton
           onClick={props.edit}
           className={classes.editBtn}
-          edge="start"
           aria-label="delete"
         >
           <EditIcon />
@@ -33,7 +33,6 @@ export default function Item(props) {
         <IconButton
           onClick={props.delete}
           className={classes.deleteBtn}
-          edge="end"
           aria-label="edit"
         >
           <DeleteIcon />
