@@ -1,11 +1,15 @@
 import * as itemActionTypes from "../actionTypes/itemActionTypes";
 
-import shortid from "shortid";
-
 const initialState = {
   status: "idle",
   error: null,
-  items: [],
+  items: {
+    suvaline: {
+      name: "tere",
+      id: "tere",
+      content: "tere",
+    },
+  },
 };
 
 const itemReducer = (state = initialState, action) => {
@@ -28,14 +32,20 @@ const itemReducer = (state = initialState, action) => {
         error: action.error,
       };
     case itemActionTypes.REMOVE_LIST_ITEM:
+      const updatedItems = { ...state.items };
+      delete updatedItems[action.item.toString()];
       return {
         ...state,
-        items: state.items.filter((v) => v.id !== action.id),
+        items: updatedItems,
       };
     case itemActionTypes.ADD_LIST_ITEM:
+      let newItems = { ...state.items };
+      newItems[action.item.itemKey.name] = action.item.itemBody;
       return {
         ...state,
-        items: [...state.items, { ...action.data, id: shortid.generate() }],
+        items: {
+          ...newItems,
+        },
       };
     default:
       return state;

@@ -34,7 +34,7 @@ export const fetchItems = () => async (dispatch) => {
         "https://portfolio-76f4d-default-rtdb.europe-west1.firebasedatabase.app/items.json"
       )
     ).json();
-    if (data !== null) {
+    if (data) {
       dispatch(fetchItemsSuccess(data));
     } else {
       throw new Error("Could not fetch to-do items!");
@@ -44,16 +44,56 @@ export const fetchItems = () => async (dispatch) => {
   }
 };
 
-export const removeItem = (id) => (dispatch) => {
-  dispatch({
-    type: itemActionTypes.REMOVE_LIST_ITEM,
-    id: id,
-  });
+export const addItem = (item) => async (dispatch) => {
+  const settings = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify(item),
+  };
+  // Simulating loading
+  await stall();
+  try {
+    const fetchResponse = await fetch(
+      "https://portfolio-76f4d-default-rtdb.europe-west1.firebasedatabase.app/items.json",
+      settings
+    );
+    const data = await fetchResponse.json();
+    dispatch({
+      type: itemActionTypes.ADD_LIST_ITEM,
+      item: {
+        itemBody: item,
+        itemKey: data,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
-export const addItem = (data) => (dispatch) => {
-  dispatch({
-    type: itemActionTypes.ADD_LIST_ITEM,
-    data: data,
-  });
+export const removeItem = (item) => async (dispatch) => {
+  const settings = {
+    method: "DELETE",
+  };
+  // Simulating loading
+  await stall();
+  try {
+    const fetchResponse = await fetch(
+      `https://portfolio-76f4d-default-rtdb.europe-west1.firebasedatabase.app/items/${item}.json`,
+      settings
+    );
+    const data = await fetchResponse.json();
+
+    dispatch({
+      type: itemActionTypes.REMOVE_LIST_ITEM,
+      item: item,
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
 };

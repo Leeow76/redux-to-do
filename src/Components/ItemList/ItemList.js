@@ -52,21 +52,20 @@ function ItemList(props) {
   }, [itemStatus, dispatch]);
 
   const editListItem = (editData) => {
-    console.log(editData);
     return editData;
   };
 
   let itemComponents = null;
   if (itemStatus !== "failed") {
-    itemComponents = items.map((item, index) => (
-      <React.Fragment key={index}>
+    itemComponents = Object.keys(items).map((key, index) => (
+      <React.Fragment key={key}>
         <Item
-          delete={() => removeListItem(item.id)}
-          edit={() => editListItem(item)}
-          title={item.title}
-          content={item.content}
+          delete={() => removeListItem(key)}
+          edit={() => editListItem(items[key])}
+          title={items[key].title}
+          content={items[key].content}
         />
-        {items.length !== index + 1 && (
+        {Object.keys(items).length !== index + 1 && (
           <Divider light variant="middle" component="li" />
         )}
       </React.Fragment>
@@ -92,7 +91,7 @@ function ItemList(props) {
             {itemsError.message}
           </Alert>
         )}
-        {itemStatus === "succeeded" && items.length > 0 && (
+        {itemStatus === "succeeded" && Object.keys(items).length > 0 && (
           <List>{itemComponents}</List>
         )}
         <AddItemInput

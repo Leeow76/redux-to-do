@@ -8,7 +8,7 @@ import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(3, 2),
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",

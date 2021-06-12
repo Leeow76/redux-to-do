@@ -8,6 +8,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles((theme) => ({
+  listItem: {
+    paddingRight: theme.spacing(18),
+    minHeight: theme.spacing(9),
+  },
   deleteBtn: {
     color: theme.palette.error.main,
   },
@@ -20,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Item(props) {
   const classes = useStyles();
   return (
-    <ListItem>
+    <ListItem className={classes.listItem}>
       <ListItemText primary={props.title} secondary={props.content} />
       <ListItemSecondaryAction>
         <IconButton
