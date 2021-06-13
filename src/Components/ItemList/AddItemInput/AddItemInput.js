@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
@@ -39,12 +39,6 @@ export default function AddItemInput(props) {
   const [content, setContent] = useState();
   const classes = useStyles();
 
-  // useEffect(() => {
-  //   if (props.editData) {
-  //     console.log(props.editData);
-  //   }
-  // }, [props.editData]);
-
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
@@ -60,7 +54,7 @@ export default function AddItemInput(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.submit({ title, content });
+    props.submit({ title, content, isChecked: false });
     resetForm();
   };
 

@@ -32,11 +32,18 @@ const itemReducer = (state = initialState, action) => {
         error: action.error,
       };
     case itemActionTypes.REMOVE_LIST_ITEM:
-      const updatedItems = { ...state.items };
-      delete updatedItems[action.item.toString()];
+      const removeListItems = { ...state.items };
+      delete removeListItems[action.key.toString()];
       return {
         ...state,
-        items: updatedItems,
+        items: removeListItems,
+      };
+    case itemActionTypes.TOGGLECHECK_LIST_ITEM:
+      const toggleCheckItems = { ...state.items };
+      toggleCheckItems[action.item.itemKey].isChecked = !action.item.itemIsChecked;
+      return {
+        ...state,
+        items: toggleCheckItems,
       };
     case itemActionTypes.ADD_LIST_ITEM:
       let newItems = { ...state.items };

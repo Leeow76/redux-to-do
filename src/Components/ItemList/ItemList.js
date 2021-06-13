@@ -40,9 +40,10 @@ function ItemList(props) {
   const itemsError = useSelector((state) => state.itemReducer.error);
 
   // Redux dispatch
-  const removeListItem = (index) => dispatch(itemActions.removeItem(index));
-  const addListItem = (data) => dispatch(itemActions.addItem(data));
   const fetchItems = () => dispatch(itemActions.fetchItems());
+  const removeListItem = (key) => dispatch(itemActions.removeItem(key));
+  const toggleCheckListItem = (key, isChecked) => dispatch(itemActions.toggleCheckItem(key, isChecked));
+  const addListItem = (data) => dispatch(itemActions.addItem(data));
 
   // Update if status idle and status changes
   useEffect(() => {
@@ -61,9 +62,11 @@ function ItemList(props) {
       <React.Fragment key={key}>
         <Item
           delete={() => removeListItem(key)}
-          edit={() => editListItem(items[key])}
+          edit={() => editListItem(key)}
+          toggleCheck={(isChecked) => toggleCheckListItem(key, isChecked)}
           title={items[key].title}
           content={items[key].content}
+          isChecked={items[key].isChecked}
         />
         {Object.keys(items).length !== index + 1 && (
           <Divider light variant="middle" component="li" />
