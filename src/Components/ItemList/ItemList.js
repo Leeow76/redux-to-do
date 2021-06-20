@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Divider from "@material-ui/core/Divider";
 import Container from "@material-ui/core/Container";
@@ -24,14 +24,15 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     boxSizing: "content-box",
   },
+  listItem: {
+    "& > .MuiListItem-container": {
+      display: "flex",
+    },
+  },
 }));
 
-function ItemList(props) {
+function ItemList() {
   const classes = useStyles();
-
-  // Local state to store and pass edit item data
-  const [isEditMode, setTitle] = useState();
-  const [editData, setEditData] = useState();
 
   // Redux state
   const dispatch = useDispatch();
@@ -42,8 +43,12 @@ function ItemList(props) {
   // Redux dispatch
   const fetchItems = () => dispatch(itemActions.fetchItems());
   const removeListItem = (key) => dispatch(itemActions.removeItem(key));
-  const toggleCheckListItem = (key, isChecked) => dispatch(itemActions.toggleCheckItem(key, isChecked));
-  const addListItem = (data) => dispatch(itemActions.addItem(data));
+  const toggleCheckListItem = (key, isChecked) =>
+    dispatch(itemActions.toggleCheckItem(key, isChecked));
+  const addListItem = (itemData) => dispatch(itemActions.addItem(itemData));
+  const saveEditedItem = (key, itemData) => {
+    dispatch(itemActions.editItem(key, itemData));
+  };
 
   // Update if status idle and status changes
   useEffect(() => {
@@ -52,26 +57,24 @@ function ItemList(props) {
     }
   }, [itemStatus, dispatch]);
 
-  const editListItem = (editData) => {
-    return editData;
-  };
-
   let itemComponents = null;
   if (itemStatus !== "failed") {
     itemComponents = Object.keys(items).map((key, index) => (
-      <React.Fragment key={key}>
+      <div className={classes.listItem} key={key}>
         <Item
           delete={() => removeListItem(key)}
-          edit={() => editListItem(key)}
           toggleCheck={(isChecked) => toggleCheckListItem(key, isChecked)}
           title={items[key].title}
           content={items[key].content}
           isChecked={items[key].isChecked}
+          saveEditedItem={({ title, content }) =>
+            saveEditedItem(key, { title, content })
+          }
         />
         {Object.keys(items).length !== index + 1 && (
           <Divider light variant="middle" component="li" />
         )}
-      </React.Fragment>
+      </div>
     ));
   }
 
@@ -97,10 +100,7 @@ function ItemList(props) {
         {itemStatus === "succeeded" && Object.keys(items).length > 0 && (
           <List>{itemComponents}</List>
         )}
-        <AddItemInput
-          editData={editListItem(editData)}
-          submit={(data) => addListItem(data)}
-        />
+        <AddItemInput submit={(itemData) => addListItem(itemData)} />
       </Paper>
     </Container>
   );

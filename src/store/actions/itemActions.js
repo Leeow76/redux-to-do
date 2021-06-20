@@ -105,7 +105,7 @@ export const toggleCheckItem = (key, isChecked) => async (dispatch) => {
   const settings = {
     method: "PATCH",
     body: JSON.stringify({
-      isChecked: !isChecked
+      isChecked: !isChecked,
     }),
   };
   // Simulating loading
@@ -121,6 +121,37 @@ export const toggleCheckItem = (key, isChecked) => async (dispatch) => {
       type: itemActionTypes.TOGGLECHECK_LIST_ITEM,
       item: {
         itemIsChecked: isChecked,
+        itemKey: key,
+      },
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const editItem = (key, itemData) => async (dispatch) => {
+  const settings = {
+    method: "PATCH",
+    body: JSON.stringify({
+      title: itemData.title,
+      content: itemData.content,
+    }),
+  };
+  // Simulating loading
+  await stall(200);
+  try {
+    const fetchResponse = await fetch(
+      `https://portfolio-76f4d-default-rtdb.europe-west1.firebasedatabase.app/items/${key}.json`,
+      settings
+    );
+    const data = await fetchResponse.json();
+
+    dispatch({
+      type: itemActionTypes.EDIT_LIST_ITEM,
+      item: {
+        itemTitle: itemData.title,
+        itemContent: itemData.content,
         itemKey: key,
       },
     });

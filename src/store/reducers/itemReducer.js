@@ -40,10 +40,19 @@ const itemReducer = (state = initialState, action) => {
       };
     case itemActionTypes.TOGGLECHECK_LIST_ITEM:
       const toggleCheckItems = { ...state.items };
-      toggleCheckItems[action.item.itemKey].isChecked = !action.item.itemIsChecked;
+      toggleCheckItems[action.item.itemKey].isChecked =
+        !action.item.itemIsChecked;
       return {
         ...state,
         items: toggleCheckItems,
+      };
+    case itemActionTypes.EDIT_LIST_ITEM:
+      const editItems = { ...state.items };
+      editItems[action.item.itemKey].title = action.item.itemTitle;
+      editItems[action.item.itemKey].content = action.item.itemContent;
+      return {
+        ...state,
+        items: editItems,
       };
     case itemActionTypes.ADD_LIST_ITEM:
       let newItems = { ...state.items };

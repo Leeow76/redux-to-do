@@ -35,9 +35,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AddItemInput(props) {
+  const classes = useStyles();
+
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
-  const classes = useStyles();
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
